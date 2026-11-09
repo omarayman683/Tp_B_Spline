@@ -42,19 +42,19 @@ Les poids changent le long de la courbe : c'est ce qui la rend lisse.
 
 ## Les 4 briques du code (`bspline.py`)
 
-1. **`lire_points`** — lit le fichier `index,x,y` (gère `,` et `;`).
+1. **Lecture** — `np.loadtxt` lit le fichier `index,x,y` (on garde x et y).
 
-2. **`vecteur_noeuds`** — construit le *vecteur de nœuds* « clampé » : `p+1`
+2. **`noeuds`** — construit le *vecteur de nœuds* « clampé » : `p+1`
    zéros au début, `p+1` uns à la fin, le reste réparti régulièrement. Résultat :
    la courbe **part du premier point** et **arrive au dernier**.
 
-3. **`base_bspline`** — **le cœur du TP**. C'est la définition d'une B-spline
+3. **`N`** — **le cœur du TP**. C'est la définition d'une B-spline
    programmée directement :
    - degré 0 : une « marche » qui vaut 1 sur un seul intervalle de nœuds, 0 ailleurs ;
    - degré p : combinaison de deux fonctions de degré `p-1` (formule de Cox – de Boor).
      Un dénominateur nul est ignoré (convention habituelle, évite la division par zéro).
 
-4. **`point_courbe` / `courbe_bspline`** — pour chaque `t`, on fait la somme
+4. **`bspline`** — pour chaque `t`, on fait la somme
    `Σ N_{i,p}(t) · P_i`, et on échantillonne `t` de 0 à 1 pour tracer toute la courbe.
 
 ## Ce qu'on observe
@@ -64,7 +64,7 @@ Les poids changent le long de la courbe : c'est ce qui la rend lisse.
   mais garde la forme globale. C'est le comportement attendu d'une B-spline.
 
 > Contour **fermé** : dans `bspline.py`, on recopie le premier point à la fin
-> (`px = np.append(px, px[0])`) pour que la courbe boucle.
+> (`P = np.vstack([P, P[0]])`) pour que la courbe boucle.
 
 ## Fichiers
 
